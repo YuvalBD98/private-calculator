@@ -31,3 +31,12 @@ Recommended setup:
 
 ## Updating an existing GitHub Pages install
 Replace all old repository files with the files from this folder, commit, wait for GitHub Pages to redeploy, then fully close/reopen the Home Screen web app. If an older cached version remains, delete the Home Screen app and add it again from Safari.
+
+
+## v4 iOS 26 display/interaction refinements
+- Fixed reveal format remains DDMMYYHHMM.
+- Live expression now has exactly two text sizes: the normal large size and one compact size.
+- Once the compact expression is still wider than the screen, it no longer shrinks again; the display follows the newest digits/operators horizontally so the latest input stays visible.
+- Thousands separators are applied per numeric operand while typing.
+- Number/operator/function buttons now show a persistent touch highlight plus a short Liquid-Glass-style compress/deform animation on every press.
+- Offline cache bumped to v4.

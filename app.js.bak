@@ -2,7 +2,6 @@
   'use strict';
 
   const display = document.getElementById('display');
-  const displayViewport = document.getElementById('displayViewport');
   const expressionLine = document.getElementById('expressionLine');
   const displayStack = document.getElementById('displayStack');
   const keypad = document.getElementById('keypad');
@@ -162,36 +161,20 @@
     requestAnimationFrame(fitDisplays);
   }
 
-  function fitResultExpression() {
-    if (!justEvaluated || !lastExpression) return;
-    expressionLine.style.fontSize = '28px';
-    const available = expressionLine.clientWidth;
-    if (expressionLine.scrollWidth > available) expressionLine.style.fontSize = '22px';
+  function fitOneLine(el, maxSize, minSize) {
+    el.style.fontSize = `${maxSize}px`;
+    const available = el.parentElement.clientWidth;
+    const width = el.scrollWidth;
+    if (width > available && width > 0) {
+      const size = Math.max(minSize, Math.floor(maxSize * available / width));
+      el.style.fontSize = `${size}px`;
+    }
   }
-
-  // iOS 26 uses one clear size reduction for the live calculation.
-  // After that single step, the line stays at the compact size and the viewport
-  // follows the newest characters instead of repeatedly shrinking the text.
   function fitDisplays() {
-    if (!displayViewport) return;
-
-    display.classList.remove('is-compact');
-    displayViewport.scrollLeft = 0;
-
-    // Measure once at the normal iOS-size font. If it no longer fits, take one
-    // compact step only. Do not keep scaling the font down.
-    const available = displayViewport.clientWidth;
-    if (display.scrollWidth > available + 1) display.classList.add('is-compact');
-
-    fitResultExpression();
-
-    requestAnimationFrame(() => {
-      // Always keep the most recently entered digit/operator visible. This
-      // reproduces the Calculator behavior once the compact line overflows.
-      displayViewport.scrollLeft = Math.max(0, displayViewport.scrollWidth - displayViewport.clientWidth);
-    });
+    fitOneLine(display, 80, 36);
+    if (justEvaluated && lastExpression) fitOneLine(expressionLine, 28, 18);
   }
-  window.addEventListener('resize', () => requestAnimationFrame(fitDisplays));
+  window.addEventListener('resize', fitDisplays);
 
   function startFreshIfNeeded() {
     if (!justEvaluated) return;
@@ -368,37 +351,6 @@
     accumulator = Number.isFinite(result) ? result : null;
     pendingOperator = null; waitingForOperand = true; expressionTokens = []; justEvaluated = true; render();
   }
-
-  const pressTimers = new WeakMap();
-  function pressOn(button) {
-    const oldTimer = pressTimers.get(button);
-    if (oldTimer) clearTimeout(oldTimer);
-    button.classList.add('is-pressed');
-    pressTimers.delete(button);
-    if (navigator.vibrate) {
-      try { navigator.vibrate(6); } catch (_) {}
-    }
-  }
-  function pressOff(button, minimumHold = 85) {
-    const oldTimer = pressTimers.get(button);
-    if (oldTimer) clearTimeout(oldTimer);
-    const timer = setTimeout(() => {
-      button.classList.remove('is-pressed');
-      pressTimers.delete(button);
-    }, minimumHold);
-    pressTimers.set(button, timer);
-  }
-
-  // Native iOS 26 Liquid Glass controls visibly deform/highlight on touch.
-  // Keep the flash on screen for a few frames so even very fast taps are visible.
-  document.querySelectorAll('.key, .round-control').forEach((button) => {
-    button.addEventListener('pointerdown', () => pressOn(button));
-    button.addEventListener('pointerup', () => pressOff(button));
-    button.addEventListener('pointercancel', () => pressOff(button, 0));
-    button.addEventListener('pointerleave', (event) => {
-      if (event.buttons) pressOff(button, 0);
-    });
-  });
 
   keypad.addEventListener('click', (event) => {
     const button = event.target.closest('button'); if (!button) return;

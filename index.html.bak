@@ -37,9 +37,7 @@
     <section class="display-wrap" aria-live="polite">
       <div class="display-stack" id="displayStack">
         <div class="expression-line" id="expressionLine"></div>
-        <div class="display-viewport" id="displayViewport">
-          <div class="display" id="display">0</div>
-        </div>
+        <div class="display" id="display">0</div>
       </div>
     </section>
 
