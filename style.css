@@ -1,9 +1,9 @@
 :root {
   color-scheme: dark;
   --bg: #000000;
-  --number: #343434;
-  --function: #5e5e5e;
-  --orange: #f19837;
+  --number: #2c2c2c;
+  --function: #535353;
+  --orange: #fc8500;
   --text: #f5f5f5;
   --muted: #8e8e93;
   --key-edge: rgba(255,255,255,.12);
@@ -67,7 +67,7 @@ button { -webkit-tap-highlight-color: transparent; }
   display: flex;
   align-items: flex-end;
   justify-content: flex-end;
-  padding: 0 20px 20px;
+  padding: 0 20px 16px;
   overflow: hidden;
 }
 .display-stack {
@@ -100,17 +100,17 @@ button { -webkit-tap-highlight-color: transparent; }
 .display-viewport {
   width: 100%;
   min-width: 0;
-  overflow-x: auto;
-  overflow-y: hidden;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  overscroll-behavior-x: contain;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
   pointer-events: none;
 }
 .display-viewport::-webkit-scrollbar { display: none; }
 .display {
   width: max-content;
   min-width: 100%;
+  flex: 0 0 auto;
   text-align: right;
   font-weight: 300;
   font-size: 80px;
@@ -121,14 +121,14 @@ button { -webkit-tap-highlight-color: transparent; }
   transform-origin: right center;
 }
 .display.is-compact {
-  font-size: 54px;
+  font-size: 61px;
   letter-spacing: -.04em;
 }
 
 .keypad {
-  --key-size: min(20.68vw, 91px);
-  --col-gap: min(3.03vw, 13.33px);
-  --row-gap: min(1.67vw, 7.33px);
+  --key-size: min(21.68vw, 95.5px);
+  --col-gap: min(1.95vw, 8.6px);
+  --row-gap: min(1.76vw, 7.75px);
   flex: 0 0 auto;
   display: grid;
   grid-template-columns: repeat(4, var(--key-size));
@@ -148,7 +148,7 @@ button { -webkit-tap-highlight-color: transparent; }
   display: grid;
   place-items: center;
   padding: 0;
-  font-size: 42px;
+  font-size: 38px;
   font-weight: 300;
   line-height: 1;
   outline: none;
@@ -156,7 +156,7 @@ button { -webkit-tap-highlight-color: transparent; }
   overflow: hidden;
   isolation: isolate;
   box-shadow: inset 0 1px 0 rgba(255,255,255,.045), inset 0 -1px 0 rgba(0,0,0,.2);
-  transition: transform 105ms cubic-bezier(.2,.82,.2,1), border-radius 105ms cubic-bezier(.2,.82,.2,1), background-color 70ms linear, box-shadow 90ms linear;
+  transition: transform 78ms cubic-bezier(.2,.9,.2,1.08), background-color 55ms linear, box-shadow 70ms linear;
   will-change: transform, border-radius;
 }
 .key::after {
@@ -165,23 +165,26 @@ button { -webkit-tap-highlight-color: transparent; }
   inset: 0;
   border-radius: inherit;
   pointer-events: none;
-  background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.24), rgba(255,255,255,.04) 56%, rgba(255,255,255,0) 76%);
+  background: radial-gradient(circle at 50% 42%, rgba(255,255,255,.12), rgba(255,255,255,0) 68%);
   opacity: 0;
   transition: opacity 65ms linear;
   z-index: -1;
 }
-.key-number { background: linear-gradient(180deg, #39393a 0%, #343434 48%, #303031 100%); }
-.key-function { background: linear-gradient(180deg, #666667 0%, #5e5e5f 48%, #565657 100%); }
-.key-operator { background: linear-gradient(180deg, #f8a33f 0%, #f19837 48%, #e98e2d 100%); }
+.key-number { background: #2c2c2c; }
+.key-function { background: #535353; }
+.key-operator { background: #fc8500; }
+/* Matched from the supplied iOS 26 screen recording: number/function keys
+   brighten and expand under the fingertip rather than shrinking. */
 .key.is-pressed {
-  transform: scale(.946, .934);
-  border-radius: 45%;
-  box-shadow: inset 0 1px 0 rgba(255,255,255,.12), inset 0 -1px 0 rgba(0,0,0,.12);
+  transform: scale(1.12);
+  border-radius: 50%;
+  z-index: 20;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.18), inset 0 -1px 0 rgba(0,0,0,.12);
 }
-.key.is-pressed::after { opacity: .95; }
-.key-number.is-pressed { background: #68686a; }
-.key-function.is-pressed { background: #858587; }
-.key-operator.is-pressed { background: #ffb257; }
+.key.is-pressed::after { opacity: .35; }
+.key-number.is-pressed { background: #5d5d5d; }
+.key-function.is-pressed { background: #777777; }
+.key-operator.is-pressed { background: #fca900; transform: scale(1.07); }
 .key-backspace svg { width: 47%; height: 47%; }
 .key-sign svg { width: 54%; height: 54%; }
 .key-decimal { padding-bottom: 9px; }
@@ -236,6 +239,6 @@ button { -webkit-tap-highlight-color: transparent; }
   .calculator { padding-bottom: max(env(safe-area-inset-bottom), 12px); }
   .top-controls { height: 44px; flex-basis: 44px; padding-top: 0; }
   .display-wrap { padding-bottom: 10px; }
-  .keypad { --key-size: min(19.5vw, 80px); --col-gap: 8px; --row-gap: 6px; }
-  .key { font-size: 38px; }
+  .keypad { --key-size: min(20.9vw, 88px); --col-gap: 7px; --row-gap: 6px; }
+  .key { font-size: 36px; }
 }

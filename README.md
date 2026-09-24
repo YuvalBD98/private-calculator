@@ -40,3 +40,11 @@ Replace all old repository files with the files from this folder, commit, wait f
 - Thousands separators are applied per numeric operand while typing.
 - Number/operator/function buttons now show a persistent touch highlight plus a short Liquid-Glass-style compress/deform animation on every press.
 - Offline cache bumped to v4.
+
+
+## v5 iOS 26 recording calibration
+- Live expression uses one font-size reduction only.
+- Once compact, text stays fixed-size and clips from the left so the newest character stays visible.
+- Key geometry/colors were recalibrated from the supplied iOS 26 screen recording.
+- Touch feedback now expands and brightens keys like the recording.
+- DDMMYYHHMM reveal is unchanged.

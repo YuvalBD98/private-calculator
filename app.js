@@ -175,21 +175,19 @@
   function fitDisplays() {
     if (!displayViewport) return;
 
+    // The native iOS 26 Calculator uses exactly one type-size step.
+    // Start at the large size and switch once to the compact size only
+    // when the live expression no longer fits. After that, the compact
+    // size is fixed and the content is clipped from the LEFT so the
+    // newest digit/operator on the right is always visible.
     display.classList.remove('is-compact');
-    displayViewport.scrollLeft = 0;
 
-    // Measure once at the normal iOS-size font. If it no longer fits, take one
-    // compact step only. Do not keep scaling the font down.
     const available = displayViewport.clientWidth;
-    if (display.scrollWidth > available + 1) display.classList.add('is-compact');
+    if (display.scrollWidth > available + 1) {
+      display.classList.add('is-compact');
+    }
 
     fitResultExpression();
-
-    requestAnimationFrame(() => {
-      // Always keep the most recently entered digit/operator visible. This
-      // reproduces the Calculator behavior once the compact line overflows.
-      displayViewport.scrollLeft = Math.max(0, displayViewport.scrollWidth - displayViewport.clientWidth);
-    });
   }
   window.addEventListener('resize', () => requestAnimationFrame(fitDisplays));
 
@@ -375,11 +373,8 @@
     if (oldTimer) clearTimeout(oldTimer);
     button.classList.add('is-pressed');
     pressTimers.delete(button);
-    if (navigator.vibrate) {
-      try { navigator.vibrate(6); } catch (_) {}
-    }
   }
-  function pressOff(button, minimumHold = 85) {
+  function pressOff(button, minimumHold = 105) {
     const oldTimer = pressTimers.get(button);
     if (oldTimer) clearTimeout(oldTimer);
     const timer = setTimeout(() => {

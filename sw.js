@@ -1,4 +1,4 @@
-const CACHE = 'calculator-pwa-v4';
+const CACHE = 'calculator-pwa-v5';
 const ASSETS = [
   './',
   './index.html',
